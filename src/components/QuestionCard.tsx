@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles((theme) => ({
-    quizContent: {                
+    quizContent: {
         padding: '20px 20px 80px 20px',
         position: 'relative',
         boxSizing: 'border-box',
@@ -50,13 +50,24 @@ const useStyles = makeStyles((theme) => ({
     },
     questionHeading: {
         textAlign: 'center',
-        [theme.breakpoints.down('sm')]: {            
+        [theme.breakpoints.down('sm')]: {
             marginTop: 0
         }
     },
     question: {
         margin: '20px 0 30px 0'
-    }
+    },
+    validationMsgBox: {
+        position: 'absolute',
+        bottom: 25,
+        color: '#ffffff',
+        left: 20        
+      },
+      validationMsg: {        
+        color: 'red',        
+        fontSize: 16,
+        fontWeight: 600
+      },
 }))
 
 const QuestionCard: React.FC<QuestionCardProps> = ({ question, options, submitQuestionCallback, isLastQuestion }) => {
@@ -64,18 +75,36 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question, options, submitQu
     let classes = useStyles();
 
     let [selectedOption, setSelectedOption] = useState("");
+    let [isValidationError, setIsValidationError] = useState<boolean>(false);
+    let [validationErrorMsg, setValidationErrorMsg] = useState<string>("");
 
     const handleOptionSelection = (e: any) => {
         setSelectedOption(e.target.value)
     }
 
+    const handleQuestionSubmit = (e: React.FormEvent<EventTarget>) => {
+        //submitQuestionCallback()
+        e.preventDefault();
+        if (selectedOption === "")
+            showValidation("Select an option");
+        else{
+            setIsValidationError(false);
+            submitQuestionCallback(e, selectedOption);
+        }            
+        setSelectedOption("");
+    }
+
+    const showValidation = (msg: string) => {
+        setValidationErrorMsg(msg);
+        setIsValidationError(true);        
+    }
 
     return (
         <div>
             <Paper elevation={3} className={classes.quizContent}>
                 <h2 className={classes.questionHeading}>Question</h2>
                 <p className={classes.question}>{question}</p>
-                <form onSubmit={(e: React.FormEvent<EventTarget>) => submitQuestionCallback(e, selectedOption)}>
+                <form onSubmit={(e: React.FormEvent<EventTarget>) => handleQuestionSubmit(e)}>
                     <Grid container spacing={3}>
                         {
                             options.map((quest: string, ind: number) => {
@@ -89,13 +118,20 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question, options, submitQu
                                                     value={quest}
                                                     checked={quest === selectedOption}
                                                     onChange={handleOptionSelection}
-                                                    required />
+                                                />
                                                 {quest}
                                             </label>
                                         </div>
                                     </Grid>
                                 )
                             })
+                        }
+                        {
+                            isValidationError
+                                ? <div className={classes.validationMsgBox}>
+                                    <span className={classes.validationMsg}> {validationErrorMsg}</span>
+                                </div>
+                                : <></>
                         }
                         <button
                             type="submit"

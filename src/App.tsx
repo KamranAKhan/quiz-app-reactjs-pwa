@@ -17,7 +17,9 @@ const useStyles = makeStyles((theme) => ({
   appLoading: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    minHeight: '100%',
+    height: '100%'
   },
   appLoadingImage: {
     height: 80,
@@ -316,7 +318,7 @@ function App() {
   }
 
   const handleSubmitQuestion = (e: React.FormEvent<EventTarget>, selectedAnswer: string) => {
-    e.preventDefault();
+    //e.preventDefault();
     console.log(selectedAnswer);
 
     if (selectedAnswer === quiz[currentQuestion].answer) {
