@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
-import { url } from 'inspector';
 import CardComponent from './components/QuestionCard';
 import QuizHeader from './components/QuizHeader';
 
@@ -11,8 +9,6 @@ import { QuestionFormat } from './types/Types';
 import Timer from 'react-compound-timer'
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-
-import { Select } from "react-select-tile";
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -181,6 +177,9 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: 600
     }
   },
+  termsAndConditionText: {
+    fontWeight: 600
+  },
   quizLoadingImage: {
 
   },
@@ -245,7 +244,6 @@ function App() {
   let [currentQuizAttempt, setCurrentQuizAttempt] = useState<number>(0);
   let [isValidationError, setIsValidationError] = useState<boolean>(false);
   let [validationErrorMsg, setValidationErrorMsg] = useState<string>("");
-  let [isLastQuestion, setIsLastQuestion] = useState<boolean>(false);
 
   let quizCategoryList = [
     { value: "9", label: "General knowledge" },
@@ -277,9 +275,9 @@ function App() {
   }
 
   const handleQuizStart = () => {
-    if (quizCategory != "" && quizCategory != undefined) {
-      if (quizDifficulty != "" && quizDifficulty != undefined) {
-        if (quizTotalQuestion != "" && quizTotalQuestion != undefined) {
+    if (quizCategory !== "" && quizCategory !== undefined) {
+      if (quizDifficulty !== "" && quizDifficulty !== undefined) {
+        if (quizTotalQuestion !== "" && quizTotalQuestion !== undefined) {
           if (termsAndCondition) {
             setIsValidationError(false);
             setIsQuizLoading(true);
@@ -360,7 +358,7 @@ function App() {
   }
 
   const handleAttempts = () => {
-    if (quizAttempt == 1) {
+    if (quizAttempt === 1) {
       setQuizAttempt(3);
       setIsQuizAttempt(true)
     }
@@ -377,7 +375,7 @@ function App() {
   //if (!quiz.length)  
   if (isLoading)
     return <div className={classes.appLoading}>
-      <img className={classes.appLoadingImage} src={process.env.PUBLIC_URL + '/app_loading.gif'} />      
+      <img className={classes.appLoadingImage} src={process.env.PUBLIC_URL + '/app_loading.gif'} alt={'app loading'} />      
     </div>
 
   return (
@@ -398,7 +396,7 @@ function App() {
               ? <div className={classes.quizContentCenter}>
                 <Paper elevation={3} className={classes.quizContent}>
                   <div className={classes.quizLogoSection}>
-                    <img className={classes.quizLogoSectionImage} src={process.env.PUBLIC_URL + '/quiz_logo.png'} />
+                    <img className={classes.quizLogoSectionImage} src={process.env.PUBLIC_URL + '/quiz_logo.png'} alt="quiz main logo" />
                   </div>
                   <div className={classes.categorySelect}>
                     <label>Select Category</label>                
@@ -432,7 +430,7 @@ function App() {
                   </div>
                   <div className={classes.termsAndConditionSection}>
                     <input type="checkbox" checked={isQuizAttempt} onChange={handleAttempts} /><label> Check this if you want to re-attempt Quiz. Only 3 attempts are allowed.</label><br />
-                    <input type="checkbox" checked={termsAndCondition} onChange={handleTermsAndCondition} /><label> I agree to the <a href="#">terms and conditions</a>.</label>
+                    <input type="checkbox" checked={termsAndCondition} onChange={handleTermsAndCondition} /><label> I agree to the <span className={classes.termsAndConditionText}>terms and conditions</span>.</label>
                   </div>
 
                   <button className={classes.startQuizButton} onClick={() => handleQuizStart()}>Start Quiz</button>
@@ -485,7 +483,7 @@ function App() {
               ? <div className={classes.quizContentCenter}>
                 <Paper elevation={3} className={classes.quizContentLoading}>
                   <div className={classes.laodingImageSection}>
-                    <img src={process.env.PUBLIC_URL + '/quiz_loading.gif'} alt="loading_quiz_gif" className={classes.quizLoadingImage} />
+                    <img src={process.env.PUBLIC_URL + '/quiz_loading.gif'} alt="loading quiz gif" className={classes.quizLoadingImage} />
                   </div>
                 </Paper>
               </div>
@@ -501,7 +499,7 @@ function App() {
                       : <></>
                   }
                   <div className={classes.quizLogoSection}>
-                    <img className={classes.quizLogoSectionImage} src={process.env.PUBLIC_URL + '/quiz_logo.png'} />
+                    <img className={classes.quizLogoSectionImage} src={process.env.PUBLIC_URL + '/quiz_logo.png'} alt="main quiz logo" />
                   </div>
                   <div className={classes.quizCompletedContent}>
                     <h2>Quiz Completed!!!</h2>
