@@ -49,7 +49,10 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#f77d3b',
     },
     questionHeading: {
-        textAlign: 'center'
+        textAlign: 'center',
+        [theme.breakpoints.down('sm')]: {            
+            marginTop: 0
+        }
     },
     question: {
         margin: '20px 0 30px 0'

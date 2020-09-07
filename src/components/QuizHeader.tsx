@@ -19,9 +19,13 @@ const useStyles = makeStyles((theme) => ({
         width: 50
     },
     restartSection:{
-        position: 'absolute',
+        [theme.breakpoints.down('md')]: {            
+            top: 20,
+            right: 20                 
+        },                
+        position: 'absolute',        
         top: 28,
-        right: 65
+        right: 65   
     },
     restartButton:{        
         border: 'none',

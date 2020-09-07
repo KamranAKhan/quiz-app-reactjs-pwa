@@ -45,11 +45,22 @@ const useStyles = makeStyles((theme) => ({
     margin: '5% auto 0 auto',
     width: '100%',
   },
+  attemptsLeft: {
+    [theme.breakpoints.down('sm')]: {            
+      fontSize: 14,
+      paddingBottom: 15,
+      float: 'left',
+      width: '100%'
+    }
+  },
   quizTimer: {
     textAlign: 'center',
     color: '#ffffff',
     fontWeight: 800,
-    fontSize: 64
+    fontSize: 64,
+    [theme.breakpoints.down('sm')]: {            
+      fontSize: 24
+    }
   },
   categorySection: {
     marginBottom: 10,
@@ -191,6 +202,10 @@ const useStyles = makeStyles((theme) => ({
   newQuizActionButtons: {
     textAlign: 'center',
     "& button": {
+      [theme.breakpoints.down('xs')]: {            
+        width: '100%',
+        marginBottom: 20
+      }, 
       backgroundColor: '#387dda',
       border: 'none',
       padding: '15px 40px',
@@ -496,7 +511,7 @@ function App() {
                 <Paper elevation={3} className={classes.quizContent}>
                   {
                     quizAttempt > 1
-                      ? <span>{quizAttempt - currentQuizAttempt} attempt(s) left</span>
+                      ? <span className={classes.attemptsLeft}>Attempt Left: <b>{quizAttempt - currentQuizAttempt}</b></span>
                       : <></>
                   }
                   <div className={classes.quizLogoSection}>
