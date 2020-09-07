@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
     },
     restartButton:{        
         border: 'none',
-        fontSize: 20,
-        padding: '3px 20px 7px 20px',
+        fontSize: 16,
+        padding: '3px 15px 7px 15px',
         fontWeight: 600,
         backgroundColor: '#ffffff'
     }

@@ -1,59 +1,59 @@
 import React, { useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { QuestionCardProps } from '../types/Types';
-
+import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles((theme) => ({
-  quizContent: {    
-    padding: '15px 100px 0',
-    height: 400,
-    position: 'relative'    
-  },
-  startQuizButton:{
-    right: 20,
-    bottom: 20,
-    position: 'absolute',
-    backgroundColor: '#387dda',
-    border: 'none',
-    padding: '10px 30px',
-    color: '#ffffff',
-    cursor: 'pointer',
-    "&:hover": {
-      backgroundColor: '#464ac8',
-      border: 'none'
-    }
-  },
-  questionOptionWrapper:{
-    margin: '0 40px 20px 0',
-    width: '47%',
-    float: 'left',      
-    "&:nth-child(even)":{
-        marginRight: 0
+    quizContent: {                
+        padding: '20px 20px 80px 20px',
+        position: 'relative',
+        boxSizing: 'border-box',
+        margin: '0 20px'
     },
-  },
-  questionOptions: {
-      backgroundColor: '#5d90df',
-      padding: '10px 20px',      
-      width: '100%',
-      float: 'left',      
-      boxSizing: 'border-box',
-      color: '#ffffff',
-      cursor: 'pointer'      ,
-      "&>input":{
-          visibility: 'hidden'
-      }
-  },
-  selectedAnswer:{
-    backgroundColor: '#f77d3b',
-  },  
-  questionHeading:{
-      textAlign: 'center'
-  },
-  question:{
-      margin: '40px 0'
-  }
+    startQuizButton: {
+        right: 20,
+        bottom: 20,
+        position: 'absolute',
+        backgroundColor: '#387dda',
+        border: 'none',
+        padding: '10px 30px',
+        color: '#ffffff',
+        cursor: 'pointer',
+        "&:hover": {
+            backgroundColor: '#464ac8',
+            border: 'none'
+        }
+    },
+    questionOptionWrapper: {
+        width: '100%',
+        float: 'left',
+        "&:nth-child(even)": {
+            marginRight: 0
+        },
+    },
+    questionOptions: {
+        backgroundColor: '#5d90df',
+        padding: '10px 20px',
+        width: '100%',
+        float: 'left',
+        boxSizing: 'border-box',
+        color: '#ffffff',
+        cursor: 'pointer',
+        "&>input": {
+            visibility: 'hidden'
+        }
+    },
+    selectedAnswer: {
+        backgroundColor: '#f77d3b',
+    },
+    questionHeading: {
+        textAlign: 'center'
+    },
+    question: {
+        margin: '20px 0 30px 0'
+    }
 }))
 
 const QuestionCard: React.FC<QuestionCardProps> = ({ question, options, submitQuestionCallback, isLastQuestion }) => {
@@ -62,45 +62,45 @@ const QuestionCard: React.FC<QuestionCardProps> = ({ question, options, submitQu
 
     let [selectedOption, setSelectedOption] = useState("");
 
-    let optionsInAlphabet = ['A', 'B', 'C', 'D'];
-
     const handleOptionSelection = (e: any) => {
         setSelectedOption(e.target.value)
     }
-   
+
 
     return (
         <div>
             <Paper elevation={3} className={classes.quizContent}>
                 <h2 className={classes.questionHeading}>Question</h2>
                 <p className={classes.question}>{question}</p>
-                <div>
-                    <form onSubmit={(e: React.FormEvent<EventTarget>) => submitQuestionCallback(e, selectedOption)}>
+                <form onSubmit={(e: React.FormEvent<EventTarget>) => submitQuestionCallback(e, selectedOption)}>
+                    <Grid container spacing={3}>
                         {
                             options.map((quest: string, ind: number) => {
                                 return (
-                                    <div key={ind} className={classes.questionOptionWrapper}>                                                                                
-                                        <label className={`${classes.questionOptions} ${quest === selectedOption ? classes.selectedAnswer : ""}`}>                                            
-                                            <input
-                                                type="radio"
-                                                name="opt"
-                                                value={quest}
-                                                checked={quest === selectedOption}
-                                                onChange={handleOptionSelection}
-                                                required />
-                                            {quest}
-                                        </label>
-                                    </div>
+                                    <Grid item xs={12} sm={6} md={6} key={ind}>
+                                        <div className={classes.questionOptionWrapper}>
+                                            <label className={`${classes.questionOptions} ${quest === selectedOption ? classes.selectedAnswer : ""}`}>
+                                                <input
+                                                    type="radio"
+                                                    name="opt"
+                                                    value={quest}
+                                                    checked={quest === selectedOption}
+                                                    onChange={handleOptionSelection}
+                                                    required />
+                                                {quest}
+                                            </label>
+                                        </div>
+                                    </Grid>
                                 )
                             })
                         }
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             className={classes.startQuizButton}>
                             {isLastQuestion ? 'Submit Quiz' : 'Next'}
                         </button>
-                    </form>
-                </div>
+                    </Grid>
+                </form>
             </Paper>
         </div>
 

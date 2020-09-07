@@ -19,8 +19,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   appLoading: {
-    textAlign: 'center',
-    marginTop: '23%'
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   appLoadingImage: {
     height: 80,
@@ -33,16 +34,20 @@ const useStyles = makeStyles((theme) => ({
   quizBody: {
     position: 'relative'
   },
-  quizContent: {
-    width: '52%',
-    margin: '10% auto 0 auto',
-    height: 400,
-    padding: 20,
-    position: 'relative'
+  quizContent: {    
+    margin: '10% 20px 0',
+    padding: '20px 20px 80px 20px',
+    position: 'relative',
+    boxSizing: 'border-box'
+  },
+  quizContentLoading: {    
+    margin: '10% 20px 0',
+    position: 'relative',
+    height: 400
   },
   quizContentCenter: {
     margin: '5% auto 0 auto',
-    width: '54%',
+    width: '100%',
   },
   quizTimer: {
     textAlign: 'center',
@@ -74,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .css-1k8n018-menuItem:hover": {
       backgroundColor: '#f77d3c',
-      color: '#ffffff',      
+      color: '#ffffff',
     },
     "& .css-1szzzam-menuItem-menuItemActive": {
       backgroundColor: '#3e5fd0',
@@ -82,6 +87,26 @@ const useStyles = makeStyles((theme) => ({
       padding: '15px 0',
       textAlign: 'center',
       margin: '0 10px 10px 0'
+    }
+  },
+  categorySelect: {
+    marginBottom: 10,
+    "&>label": {
+      fontSize: 14,
+    },
+    "& select": {
+      width: '100%',
+      height: 29,
+      borderRadius: 1,
+      border: '1px solid #ccc',
+      textIndent: 7,
+      fontSize: 16,
+      color: '#555555',
+      fontWeight: 500,
+      marginTop: 5
+    },
+    "& select option": {
+      textIndent: 7,
     }
   },
   difficultySelect: {
@@ -157,10 +182,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   quizLoadingImage: {
-    position: 'absolute',
-    top: 40,
-    height: 400,
-    left: 130
+
   },
   quizCompletedContent: {
     textAlign: 'center',
@@ -168,7 +190,7 @@ const useStyles = makeStyles((theme) => ({
   },
   newQuizActionButtons: {
     textAlign: 'center',
-    "& button": {      
+    "& button": {
       backgroundColor: '#387dda',
       border: 'none',
       padding: '15px 40px',
@@ -181,16 +203,23 @@ const useStyles = makeStyles((theme) => ({
       }
     }
   },
-  validationMsgBox:{
+  validationMsgBox: {
     position: 'absolute',
-    bottom: 5,    
+    bottom: 5,
     color: '#ffffff',
     width: '94%',
     textAlign: 'center'
   },
-  validationMsg:{
+  validationMsg: {
     backgroundColor: '#ab2e3a',
     padding: '5px 10px',
+  },
+  laodingImageSection: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 }))
 
@@ -216,7 +245,7 @@ function App() {
   let [currentQuizAttempt, setCurrentQuizAttempt] = useState<number>(0);
   let [isValidationError, setIsValidationError] = useState<boolean>(false);
   let [validationErrorMsg, setValidationErrorMsg] = useState<string>("");
-  let [isLastQuestion, setIsLastQuestion] = useState<boolean>(false);  
+  let [isLastQuestion, setIsLastQuestion] = useState<boolean>(false);
 
   let quizCategoryList = [
     { value: "9", label: "General knowledge" },
@@ -229,7 +258,7 @@ function App() {
     { value: "10", label: "Books" }
   ];
 
-  setTimeout(()=> setIsLoading(false), 1000)
+  setTimeout(() => setIsLoading(false), 1000)
 
   async function fetchData() {
     const questions: QuestionFormat[] = await getQuizData(quizTotalQuestion, quizCategory, quizDifficulty);
@@ -244,30 +273,29 @@ function App() {
   const showValidation = (msg: string) => {
     setValidationErrorMsg(msg);
     setIsValidationError(true);
-    setTimeout(()=> setIsValidationError(false), 1000);
+    setTimeout(() => setIsValidationError(false), 1000);
   }
 
   const handleQuizStart = () => {
     if (quizCategory != "" && quizCategory != undefined) {
-      if(quizDifficulty != "" && quizDifficulty != undefined){
-        if(quizTotalQuestion != "" && quizTotalQuestion != undefined){
+      if (quizDifficulty != "" && quizDifficulty != undefined) {
+        if (quizTotalQuestion != "" && quizTotalQuestion != undefined) {
           if (termsAndCondition) {
             setIsValidationError(false);
             setIsQuizLoading(true);
             setCurrentQuizAttempt(1);
             fetchData();
           }
-          else
-          {
+          else {
             showValidation("Please accept terms and condition to continue.");
-          }            
+          }
         }
         else
-          showValidation("Please select total questions for quiz.");  
-      }  
-      else{
-        showValidation("Please select quiz difficulty.");  
-      }    
+          showValidation("Please select total questions for quiz.");
+      }
+      else {
+        showValidation("Please select quiz difficulty.");
+      }
     }
     else
       showValidation("Please select quiz category.");
@@ -299,9 +327,9 @@ function App() {
     setCurrentQuizAttempt(++currentQuizAttempt);
   }
 
-  const handleSetQuizCategory = (value: string) => {
-    setQuizCategory(value);
-    console.log(value);
+  const handleSetQuizCategory = (e: any) => {
+    setQuizCategory(e.target.value);
+    console.log(e.target.value);
   };
 
   const handleSetQuizDifficulty = (e: any) => {
@@ -332,11 +360,11 @@ function App() {
   }
 
   const handleAttempts = () => {
-    if (quizAttempt == 1){
+    if (quizAttempt == 1) {
       setQuizAttempt(3);
       setIsQuizAttempt(true)
     }
-    else{
+    else {
       setQuizAttempt(1);
       setIsQuizAttempt(false)
     }
@@ -347,11 +375,10 @@ function App() {
   }
 
   //if (!quiz.length)  
-   if (isLoading)
+  if (isLoading)
     return <div className={classes.appLoading}>
-              <img className={classes.appLoadingImage} src={process.env.PUBLIC_URL + '/app_loading.gif'} />
-              <div className={classes.appLoadingText}>Loading...</div>
-            </div>
+      <img className={classes.appLoadingImage} src={process.env.PUBLIC_URL + '/app_loading.gif'} />      
+    </div>
 
   return (
     <div className={classes.quizBody}>
@@ -363,126 +390,137 @@ function App() {
         totalQuestions={quiz.length}
         quizDifficulty={quizDifficulty}
       />
-      {
-        (!isQuizStart && !isQuizCompleted && !isQuizLoading)
-          ? <Paper elevation={3} className={classes.quizContent}>
-            <div className={classes.quizLogoSection}>
-              <img className={classes.quizLogoSectionImage} src={process.env.PUBLIC_URL + '/quiz_logo.png'} />
-            </div>
-            <div className={classes.categorySection}>
-              <label>Select Category</label>
-              <Select
-                placeholder="Please select ..."
-                value={quizCategory}
-                options={quizCategoryList}
-                onItemClick={handleSetQuizCategory}
-              />
-            </div>
-            <div className={classes.difficultySelect}>
-              <label>Select Difficulty</label>
-              <select value={quizDifficulty} onChange={(e: any) => handleSetQuizDifficulty(e)}>
-                <option value="">Please select ...</option>
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-              </select>
-            </div>
-            <div className={classes.questionsSelect}>
-              <label>Number of Questions</label>
-              <select value={quizTotalQuestion} onChange={(e: any) => handleSetQuizTotalQuestion(e)}>
-                <option value="">Please select ...</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-              </select>
-            </div>
-            <div className={classes.termsAndConditionSection}>
-              <input type="checkbox" checked={isQuizAttempt} onChange={handleAttempts} /><label> Check this if you want to re-attempt Quiz. Only 3 attempts are allowed.</label><br />
-              <input type="checkbox" checked={termsAndCondition} onChange={handleTermsAndCondition} /><label> I agree to the <a href="javascript:;">terms and conditions</a>.</label>
-            </div>
+      <Grid container>
+        <Grid item xs={12} sm={12} md={3}></Grid>
+        <Grid item xs={12} sm={12} md={6}>
+          {
+            (!isQuizStart && !isQuizCompleted && !isQuizLoading)
+              ? <div className={classes.quizContentCenter}>
+                <Paper elevation={3} className={classes.quizContent}>
+                  <div className={classes.quizLogoSection}>
+                    <img className={classes.quizLogoSectionImage} src={process.env.PUBLIC_URL + '/quiz_logo.png'} />
+                  </div>
+                  <div className={classes.categorySelect}>
+                    <label>Select Category</label>                
+                     <select value={quizCategory} onChange={(e: any) => handleSetQuizCategory(e)}>
+                      <option value="">Please select ...</option>
+                      {
+                        quizCategoryList.map((category, ind) => {
+                        return <option value={category.value} key={ind}>{category.label}</option>
+                        })
+                      }
+                    </select>
+                  </div>
+                  <div className={classes.difficultySelect}>
+                    <label>Select Difficulty</label>
+                    <select value={quizDifficulty} onChange={(e: any) => handleSetQuizDifficulty(e)}>
+                      <option value="">Please select ...</option>
+                      <option value="easy">Easy</option>
+                      <option value="medium">Medium</option>
+                      <option value="hard">Hard</option>
+                    </select>
+                  </div>
+                  <div className={classes.questionsSelect}>
+                    <label>Number of Questions</label>
+                    <select value={quizTotalQuestion} onChange={(e: any) => handleSetQuizTotalQuestion(e)}>
+                      <option value="">Please select ...</option>
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="15">15</option>
+                      <option value="20">20</option>
+                    </select>
+                  </div>
+                  <div className={classes.termsAndConditionSection}>
+                    <input type="checkbox" checked={isQuizAttempt} onChange={handleAttempts} /><label> Check this if you want to re-attempt Quiz. Only 3 attempts are allowed.</label><br />
+                    <input type="checkbox" checked={termsAndCondition} onChange={handleTermsAndCondition} /><label> I agree to the <a href="#">terms and conditions</a>.</label>
+                  </div>
 
-            <button className={classes.startQuizButton} onClick={() => handleQuizStart()}>Start Quiz</button>
+                  <button className={classes.startQuizButton} onClick={() => handleQuizStart()}>Start Quiz</button>
 
-            {
-              isValidationError
-              ? <div className={classes.validationMsgBox}>
-                  <span className={classes.validationMsg}> {validationErrorMsg}</span>                  
-                </div>
-              : <></>
-            }            
-
-          </Paper>
-          : <></>
-      }
-      {
-        isQuizStart && !isQuizCompleted && !isQuizLoading
-          ? <div className={classes.quizContentCenter}>
-            <div className={classes.quizTimer}>
-              <Timer
-                initialTime={(5 * 60 * 1000) - 1000}
-                direction="backward"
-                checkpoints={[
                   {
-                    time: 0,
-                    callback: timeUpCancelQuiz,
-                  },
-                  // {
-                  //   time: 60000 * 60 * 48 - 5000,
-                  //   callback: () => console.log('Checkpoint B'),
-                  // }
-                ]}
-              >
-                <Timer.Minutes />:
-                <Timer.Seconds />
-              </Timer>
-            </div>
-            <CardComponent
-              question={quiz[currentQuestion].question}
-              options={quiz[currentQuestion].option}
-              submitQuestionCallback={handleSubmitQuestion}
-              isLastQuestion={currentQuestion === quiz.length - 1}
-            />
-          </div>
-          : <></>
-      }
-      {
-        isQuizLoading
-          ? <Paper elevation={3} className={classes.quizContent}>
-            <div>
-              <img src={process.env.PUBLIC_URL + '/quiz_loading.gif'} alt="loading_quiz_gif" className={classes.quizLoadingImage} />
-            </div>
-          </Paper>
-          : <></>
-      }
-      {
-        isQuizCompleted
-          ? <Paper elevation={3} className={classes.quizContent}>
-            {
-              quizAttempt > 1
-              ? <span>{quizAttempt - currentQuizAttempt} attempt(s) left</span>
+                    isValidationError
+                      ? <div className={classes.validationMsgBox}>
+                        <span className={classes.validationMsg}> {validationErrorMsg}</span>
+                      </div>
+                      : <></>
+                  }
+
+                </Paper>
+              </div>
               : <></>
-            }            
-            <div className={classes.quizLogoSection}>
-              <img className={classes.quizLogoSectionImage} src={process.env.PUBLIC_URL + '/quiz_logo.png'} />
-            </div>
-            <div className={classes.quizCompletedContent}>
-              <h2>Quiz Completed!!!</h2>
-              <p>Your score is {score} out of {quiz.length}</p>
-            </div>
-            <div className={classes.newQuizActionButtons}>
-              <button onClick={handleMainGotoMainScreen}>Try New</button>
-              {
-                isQuizCompleted && currentQuizAttempt < quizAttempt
-                ? <button onClick={handleRestartQuiz}>Re-Attempt</button>
-                : <></>
-              }              
-            </div>
-          </Paper>
-          : <></>
-      }
-
-
+          }
+          {
+            isQuizStart && !isQuizCompleted && !isQuizLoading
+              ? <div className={classes.quizContentCenter}>
+                <div className={classes.quizTimer}>
+                  <Timer
+                    initialTime={(5 * 60 * 1000) - 1000}
+                    direction="backward"
+                    checkpoints={[
+                      {
+                        time: 0,
+                        callback: timeUpCancelQuiz,
+                      },
+                      // {
+                      //   time: 60000 * 60 * 48 - 5000,
+                      //   callback: () => console.log('Checkpoint B'),
+                      // }
+                    ]}
+                  >
+                    <Timer.Minutes />:
+                <Timer.Seconds />
+                  </Timer>
+                </div>
+                <CardComponent
+                  question={quiz[currentQuestion].question}
+                  options={quiz[currentQuestion].option}
+                  submitQuestionCallback={handleSubmitQuestion}
+                  isLastQuestion={currentQuestion === quiz.length - 1}
+                />
+              </div>
+              : <></>
+          }
+          {
+            isQuizLoading
+              ? <div className={classes.quizContentCenter}>
+                <Paper elevation={3} className={classes.quizContentLoading}>
+                  <div className={classes.laodingImageSection}>
+                    <img src={process.env.PUBLIC_URL + '/quiz_loading.gif'} alt="loading_quiz_gif" className={classes.quizLoadingImage} />
+                  </div>
+                </Paper>
+              </div>
+              : <></>
+          }
+          {
+            isQuizCompleted
+              ? <div className={classes.quizContentCenter}>
+                <Paper elevation={3} className={classes.quizContent}>
+                  {
+                    quizAttempt > 1
+                      ? <span>{quizAttempt - currentQuizAttempt} attempt(s) left</span>
+                      : <></>
+                  }
+                  <div className={classes.quizLogoSection}>
+                    <img className={classes.quizLogoSectionImage} src={process.env.PUBLIC_URL + '/quiz_logo.png'} />
+                  </div>
+                  <div className={classes.quizCompletedContent}>
+                    <h2>Quiz Completed!!!</h2>
+                    <p>Your score is {score} out of {quiz.length}</p>
+                  </div>
+                  <div className={classes.newQuizActionButtons}>
+                    <button onClick={handleMainGotoMainScreen}>Try New</button>
+                    {
+                      isQuizCompleted && currentQuizAttempt < quizAttempt
+                        ? <button onClick={handleRestartQuiz}>Re-Attempt</button>
+                        : <></>
+                    }
+                  </div>
+                </Paper>
+              </div>
+              : <></>
+          }
+        </Grid>
+      </Grid>
     </div>
   );
 }
