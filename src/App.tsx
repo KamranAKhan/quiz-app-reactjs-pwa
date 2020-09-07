@@ -283,7 +283,7 @@ function App() {
       setQuiz(questions);
       setIsQuizLoading(false)
       setIsQuizStart(true);
-    }, 500);
+    }, 700);
   }
 
   const showValidation = (msg: string) => {
