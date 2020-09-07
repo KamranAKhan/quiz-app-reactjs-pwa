@@ -178,7 +178,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   termsAndConditionText: {
-    fontWeight: 500
+    fontWeight: 500,
+    textDecoration: 'underline'
   },
   quizLoadingImage: {
 
