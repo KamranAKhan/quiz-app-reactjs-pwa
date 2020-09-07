@@ -178,7 +178,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   termsAndConditionText: {
-    fontWeight: 600
+    fontWeight: 500
   },
   quizLoadingImage: {
 
