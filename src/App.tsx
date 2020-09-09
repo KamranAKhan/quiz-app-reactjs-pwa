@@ -255,7 +255,7 @@ function App() {
 
   let [quizCategory, setQuizCategory] = useState<string>("");
   let [quizDifficulty, setQuizDifficulty] = useState<string>("");
-  let [quizTotalQuestion, setQuizTotalQuestion] = useState<string>("");
+  let [quizTotalQuestion, setQuizTotalQuestion] = useState<string>("5");
   let [isQuizAttempt, setIsQuizAttempt] = useState<boolean>(false);
   let [quizAttempt, setQuizAttempt] = useState<number>(1);
   let [termsAndCondition, setTermsAndCondition] = useState<boolean>(false);
@@ -265,13 +265,13 @@ function App() {
 
   let quizCategoryList = [
     { value: "9", label: "General knowledge" },
-    { value: "17", label: "Science & Nature" },
+    //{ value: "17", label: "Science & Nature" },
     { value: "21", label: "Sports" },
     { value: "22", label: "Geography" },
     { value: "18", label: "Computer Science" },
-    { value: "23", label: "History" },
-    { value: "27", label: "Animals" },
-    { value: "10", label: "Books" }
+    //{ value: "23", label: "History" },
+    //{ value: "27", label: "Animals" },
+    //{ value: "10", label: "Books" }
   ];
 
   setTimeout(() => setIsLoading(false), 1000)
@@ -292,10 +292,10 @@ function App() {
     setTimeout(() => setIsValidationError(false), 1000);
   }
 
-  const handleQuizStart = () => {
+  const handleQuizStart = () => {    
     if (quizCategory !== "" && quizCategory !== undefined) {
       if (quizDifficulty !== "" && quizDifficulty !== undefined) {
-        if (quizTotalQuestion !== "" && quizTotalQuestion !== undefined) {
+        //if (quizTotalQuestion !== "" && quizTotalQuestion !== undefined) {
           if (termsAndCondition) {
             setIsValidationError(false);
             setIsQuizLoading(true);
@@ -305,9 +305,9 @@ function App() {
           else {
             showValidation("Please accept terms and condition to continue.");
           }
-        }
-        else
-          showValidation("Please select total questions for quiz.");
+        //}
+        //else
+        //  showValidation("Please select total questions for quiz.");
       }
       else {
         showValidation("Please select quiz difficulty.");
@@ -436,7 +436,7 @@ function App() {
                       <option value="hard">Hard</option>
                     </select>
                   </div>
-                  <div className={classes.questionsSelect}>
+                  {/* <div className={classes.questionsSelect}>
                     <label>Number of Questions</label>
                     <select value={quizTotalQuestion} onChange={(e: any) => handleSetQuizTotalQuestion(e)}>
                       <option value="">Please select ...</option>
@@ -445,7 +445,7 @@ function App() {
                       <option value="15">15</option>
                       <option value="20">20</option>
                     </select>
-                  </div>
+                  </div> */}
                   <div className={classes.termsAndConditionSection}>
                     <input type="checkbox" checked={isQuizAttempt} onChange={handleAttempts} /><label> Check this if you want to re-attempt Quiz. Only 3 attempts are allowed.</label><br />
                     <input type="checkbox" checked={termsAndCondition} onChange={handleTermsAndCondition} /><label> I agree to the <span className={classes.termsAndConditionText}>terms and conditions</span>.</label>
