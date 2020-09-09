@@ -12,6 +12,7 @@ import Paper from '@material-ui/core/Paper';
 
 import { makeStyles } from '@material-ui/core/styles';
 
+import {InitializeFirebase} from './firebase';
 
 const useStyles = makeStyles((theme) => ({
   appLoading: {
@@ -242,6 +243,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 function App() {
+  
+  InitializeFirebase();
 
   let classes = useStyles();
 
@@ -353,10 +356,10 @@ function App() {
     console.log(e.target.value);
   };
 
-  const handleSetQuizTotalQuestion = (e: any) => {
-    setQuizTotalQuestion(e.target.value);
-    console.log(e.target.value);
-  };
+  // const handleSetQuizTotalQuestion = (e: any) => {
+  //   setQuizTotalQuestion(e.target.value);
+  //   console.log(e.target.value);
+  // };
 
   const handleTermsAndCondition = () => {
     setTermsAndCondition(!termsAndCondition);
